@@ -9,3 +9,35 @@ functionalities for :
 	-- Ordering by specific column, 
 	-- Searching  by specific requirement,
 	-- Filtering data by RAM, HDD, Processor.
+	
+	
+## Team Members
+
+| #        | First name | Last name  |       
+| -------- | --------- 	| ---------- |
+| 1.	   | Zhitomir  	| Oreshenski |
+
+
+## Libraries and Tehnologies
+
+### MariaDB 
+
+	MariaDB - Database for storing data.
+
+### JQuery
+
+	JQuery - is a cross-platform JavaScript library designed to simplify the client-side.
+
+### JSDOM
+
+### NodeJS
+
+### Packages
+
+### Sequelize
+
+### Sequelize-CLI
+
+### Sequelize-Auto-Migrations
+
+
