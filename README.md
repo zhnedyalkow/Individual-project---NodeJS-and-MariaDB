@@ -1,5 +1,6 @@
-# Individual-project---NodeJS-and-MariaDB
-The second project @ Telerik Alpha Academy
+# Webcrawler-with-NodeJS-and-MariaDB
+
+The second project in @ Telerik Alpha Academy
 
 ## App Description
 
@@ -17,7 +18,7 @@ functionalities for :
 #### Filtering data by RAM, HDD, Processor.
 	
 	
-## Team Members
+## Author
 
 | #        | First name | Last name  |       
 | -------- | --------- 	| ---------- |
@@ -49,5 +50,10 @@ functionalities for :
 #### Sequelize-CLI
 
 #### Sequelize-Auto-Migrations
+
+#### JQuery
+
+#### JSDOM
+
 
 
