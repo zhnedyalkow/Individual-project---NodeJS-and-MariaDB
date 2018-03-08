@@ -6,65 +6,64 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       processor: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       ram: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       video: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       hdd: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       display: {
         allowNull: true,
-        type: Sequelize.DECIMAL(10, 2)  
+        type: Sequelize.DECIMAL(10, 2),
       },
       battery: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       weight: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       brandId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Brands', 
-          key: 'id'
+          model: 'Brands',
+          key: 'id',
         },
-        allowNull: false
-      }
-    }).then(() => { 
+        allowNull: false,
+      },
+    }).then(() => {
       queryInterface.addIndex('Specifications', {
-        fields: ['ram']
+        fields: ['ram'],
       });
 
       queryInterface.addIndex('Specifications', {
-        fields: ['hdd']
+        fields: ['hdd'],
       });
 
       queryInterface.addIndex('Specifications', {
-        fields: ['processor']
+        fields: ['processor'],
       });
-
     });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Specifications');
-  }
+  },
 };

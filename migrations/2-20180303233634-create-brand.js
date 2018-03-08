@@ -6,46 +6,46 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       laptop: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       brand: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       model: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       url: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       providerId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Providers',
-          key: 'id'
+          key: 'id',
         },
-        allowNull: false
-      }
+        allowNull: false,
+      },
     }).then(() => queryInterface.addIndex('Brands', {
         fields: ['url'],
-        unique: true
+        unique: true,
     }));
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Brands');
-  }
+  },
 };
