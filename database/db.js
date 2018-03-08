@@ -1,7 +1,8 @@
 const {
     Brand,
-    Specifications
+    Specifications,
 } = require('../models');
+
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -10,22 +11,22 @@ const checkIfExists = async (obj) => {
     const url = obj.url;
     const res = await Brand.findOne({
         where: {
-            url: url
-        }
+            url: url,
+        },
     });
 
     if (res) {
         return false;
     }
     return true;
-}
+};
 
 const addIfNotExistFromList = async (objList, providerId) => {
     await Promise.all(objList.map((obj) => {
         const res = addIfNotExists(obj, providerId);
         return res;
     }));
-}
+};
 
 const addIfNotExists = async (obj, providerId) => {
     try {
@@ -47,7 +48,6 @@ const addIfNotExists = async (obj, providerId) => {
         await brand.save();
 
         const specifications = (await Specifications.create({
-            // processor: null,
             processor: obj.processor,
             ram: obj.ram,
             video: obj.video,
@@ -63,10 +63,29 @@ const addIfNotExists = async (obj, providerId) => {
         console.log('Failed add! ' + obj.url);
         console.log(error);
     }
+};
 
-}
+/*  Delete all tables and populate provider table with values */
 
-// statistics
+const resetTablesData = async () => {
+    try {
+        await Specifications.destroy({
+            truncate: {
+                cascade: true,
+             },
+        });
+
+        await Brand.destroy({
+            truncate: {
+                cascade: true,
+             },
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+/* Statistics - Filters */
 
 const filterRam = async (value, param) => {
     let column;
@@ -79,14 +98,22 @@ const filterRam = async (value, param) => {
         column = Op.eq;
     }
     const filteredRecords =
-        await Specifications.findAll({
-            where: {
-                ram: {
-                    [column]: value
-                }
-            }
+        await Brand.findAll({
+            include: [{
+                model: Specifications,
+                where: {
+                    ram: {
+                        [column]: value,
+                    },
+                },
+            }],
         });
-    const res = filteredRecords.map((rec) => rec.dataValues);
+    const res = filteredRecords
+        .filter((el) => el !== 'undefined')
+        .map((rec) => console.log(rec.get({
+            plain: true,
+        })));
+
     return res;
 };
 
@@ -102,14 +129,20 @@ const filterHDD = async (value, param) => {
     }
 
     const filteredRecords =
-        await Specifications.findAll({
-            where: {
-                hdd: {
-                    [column]: value
-                }
-            }
+        await Brand.findAll({
+            include: [{
+                model: Specifications,
+                where: {
+                    hdd: {
+                        [column]: value,
+                    },
+                },
+            }],
         });
-    const res = filteredRecords.map((rec) => rec.dataValues);
+    const res = filteredRecords
+        .map((rec) => console.log(rec.get({
+            plain: true,
+        })));
     return res;
 };
 
@@ -125,18 +158,54 @@ const filterProcessor = async (value, param) => {
     }
 
     const filteredRecords =
-        await Specifications.findAll({
-            where: {
-                processor: {
-                    [column]: value
-                }
-            }
+        await Brand.findAll({
+            include: [{
+                model: Specifications,
+                where: {
+                    processor: {
+                        [column]: value,
+                    },
+                },
+            }],
         });
-    const res = filteredRecords.map((rec) => rec.dataValues);
+    const res = filteredRecords
+        .map((rec) => console.log(rec.get({
+            plain: true,
+        })));
+
     return res;
 };
 
-// search for specific requirement
+const filterDisplay = async (value, param) => {
+    let column;
+
+    if (param.includes('gt')) {
+        column = Op.gt;
+    } else if (param.includes('lt')) {
+        column = Op.lt;
+    } else if (param.includes('eq')) {
+        column = Op.eq;
+    }
+
+    const filteredRecords =
+        await Brand.findAll({
+            include: [{
+                model: Specifications,
+                where: {
+                    display: {
+                        [column]: value,
+                    },
+                },
+            }],
+        });
+    const res = filteredRecords
+        .map((rec) => console.log(rec.get({
+            plain: true,
+        })));
+    return res;
+};
+
+/* Statistics - Search for specific requirement */
 
 const searchForSpecificReq = async (value) => {
     const filteredRecords =
@@ -144,65 +213,88 @@ const searchForSpecificReq = async (value) => {
             where: {
                 $or: [{
                         ram: {
-                            like: '%' + value + '%'
-                        }
+                            like: '%' + value + '%',
+                        },
                     },
                     {
                         hdd: {
-                            like: '%' + value + '%'
-                        }
+                            like: '%' + value + '%',
+                        },
                     },
                     {
                         video: {
-                            like: '%' + value + '%'
-                        }
+                            like: '%' + value + '%',
+                        },
                     },
                     {
                         processor: {
-                            like: '%' + value + '%'
-                        }
+                            like: '%' + value + '%',
+                        },
                     },
                     {
                         display: {
-                            like: '%' + value + '%'
-                        }
+                            like: '%' + value + '%',
+                        },
                     },
                     {
                         battery: {
-                            like: '%' + value + '%'
-                        }
+                            like: '%' + value + '%',
+                        },
                     },
                     {
                         weight: {
-                            like: '%' + value + '%'
-                        }
+                            like: '%' + value + '%',
+                        },
                     },
-                ]
-            }
+                ],
+            },
         });
 
     const res = filteredRecords.map((rec) => rec.dataValues);
     return res;
-}
+};
 
 // Order: assuming ascending
 
 const orderBy = async (column) => {
     const orderedRecords =
-        await Specifications.findAll({
+        await Brand.findAll({
+            // limit: 10,
             order: [
-                [column, 'ASC']
-            ]
+                [{
+                    model: Specifications,
+                }, column, 'ASC'],
+            ],
+            include: [{
+                model: Specifications,
+            }],
         });
-    const res = orderedRecords.map((rec) => rec.dataValues);
-    return res;
-}
+
+    orderedRecords.map((rec) => console.log(rec.get({
+        plain: true,
+    })));
+};
+
+const showAllRecords = async () => {
+    const all =
+        await Brand.findAll({
+            include: [{
+                model: Specifications,
+            }],
+        });
+     all.map((rec) => console.log(rec.get({
+        plain: true,
+    })));
+};
 
 module.exports = {
     orderBy,
     filterRam,
     filterHDD,
     filterProcessor,
+    resetTablesData,
+    showAllRecords,
+    filterDisplay,
     addIfNotExistFromList,
     searchForSpecificReq,
-}
+};
