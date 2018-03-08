@@ -1,14 +1,14 @@
-const _ = require("lodash");
+const _ = require('lodash');
 const db = require('../database/db.js');
 const $init = require('jquery');
 const {
-    range
+    range,
 } = require('../common/helper.js');
 const {
-    JSDOM
+    JSDOM,
 } = require('jsdom');
 const {
-    extractDataFromPageAsync
+    extractDataFromPageAsync,
 } = require('../parsers/tehnopolis-parser');
 const sequelizeDbWrapper = require('../models/index');
 
@@ -98,14 +98,14 @@ const extractLaptopInfoRecAsync = async (listOfLaptopUrls, laptopInfos, currentR
     if (currentRequests.length === MAX_REQUESTS || listOfLaptopUrls.length === 0) {
         const listOfObjects = await Promise.all(currentRequests);
 
-        laptopInfos.push(...listOfObjects);
+        laptopInfos.push(...listOfObjects.filter((el) => el !== null ));
         return extractLaptopInfoRecAsync(listOfLaptopUrls, laptopInfos, []);
     } else {
         return extractLaptopInfoRecAsync(listOfLaptopUrls, laptopInfos, currentRequests);
     }
 }
 
-const run = async () => {
+const runTehnopolisCrawler = async () => {
     const maxPage = await getMaxPageAsync(url, -1);
     const pageOfUrls = getListOfUrls(maxPage);
     const listOfLinks = [];
@@ -120,8 +120,8 @@ const run = async () => {
     console.log('ready');
 }
 
-run();
+runTehnopolisCrawler();
 
 module.exports = {
-    run,
+    runTehnopolisCrawler,
 }

@@ -1,0 +1,12 @@
+logging: false
+
+npm run statistics search 4GB
+
+npm run statistics order-by price // default asc
+
+npm run statistics filter display gt 15.6
+npm run statistics filter hdd eq 32GB
+
+npm run delete - drop tables and populate providers with data
+
+npm run update - starting both crawlers

@@ -1,27 +1,28 @@
-const _ = require("lodash");
+const _ = require('lodash');
 const db = require('../database/db');
 const $init = require('jquery');
+const sequelizeDbWrapper = require('../models/index');
 const {
-    JSDOM
+    JSDOM,
 } = require('jsdom');
 const {
-    range
+    range,
 } = require('../common/helper.js');
 const {
-    extractDataFromPageAsync
+    extractDataFromPageAsync,
 } = require('../parsers/laptopbg-parser');
-const sequelizeDbWrapper = require('../models/index');
 
-const MAX_REQUESTS = 5;
+
 const url = `https://laptop.bg/laptops-all`;
-const pageurl = "https://laptop.bg/laptops-all?page=";
+const pageurl = 'https://laptop.bg/laptops-all?page=';
+const MAX_REQUESTS = 5;
 
-const getMaxPageAsync = async (url, max) => { 
-    const dom = await JSDOM.fromURL(url);
+const getMaxPageAsync = async (singleUrl, max) => {
+    const dom = await JSDOM.fromURL(singleUrl);
     const $ = $init(dom.window);
 
     const selector = $('.pagination a');
-    let current = [...selector]
+    const current = [...selector]
         .map((el) => el.innerHTML)
         .filter((x) => isNaN(x) === false)
         .map(Number)
@@ -29,33 +30,33 @@ const getMaxPageAsync = async (url, max) => {
 
     if (max > current) {
         return max;
-    } else {
-        max = current;
     }
+        max = current;
 
-    lastUrl = (pageurl + max);
+
+    const lastUrl = (pageurl + max);
     return await getMaxPageAsync(lastUrl, max);
-}
+};
 
 const getLaptopUrls = async (link) => {
     const dom = await JSDOM.fromURL(link);
     const $ = $init(dom.window);
     const laptopHref = [...$('.products li > article > div:first-child a')]
-        .map((link) => $(link).attr('href'));
+        .map((anchorLink) => $(anchorLink).attr('href'));
     return laptopHref;
 };
 
 const getListOfUrls = (max) => {
     const laptopbgLink = `https://laptop.bg/laptops-all?page=`;
     const listOfUrls = range(1, max).map((page) => {
-        const url = laptopbgLink + page;
-        return url;
+        const sigleUrl = laptopbgLink + page;
+        return sigleUrl;
     });
     return listOfUrls;
-}
+};
 
-const getPagesUrlsRecursive = async (pageUrls, listProductsUrls, currentRequests) => {
-
+const getPagesUrlsRecursive =
+        async (pageUrls, listProductsUrls, currentRequests) => {
     if (pageUrls.length === 0) {
         return;
     }
@@ -76,13 +77,12 @@ const getPagesUrlsRecursive = async (pageUrls, listProductsUrls, currentRequests
 
         listProductsUrls.push(...currentProductUrls);
         return getPagesUrlsRecursive(pageUrls, listProductsUrls, []);
-    } else {
-        return getPagesUrlsRecursive(pageUrls, listProductsUrls, currentRequests);
     }
+        return getPagesUrlsRecursive(pageUrls, listProductsUrls, currentRequests);
+};
 
-}
-
-const extractLaptopInfoRecAsync = async (listOfLaptopUrls, laptopInfos, currentRequests) => {
+const extractLaptopInfoRecAsync =
+    async (listOfLaptopUrls, laptopInfos, currentRequests) => {
     if (listOfLaptopUrls.length === 0) {
         return;
     }
@@ -97,14 +97,13 @@ const extractLaptopInfoRecAsync = async (listOfLaptopUrls, laptopInfos, currentR
     if (currentRequests.length === MAX_REQUESTS || listOfLaptopUrls.length === 0) {
         const listOfObjects = await Promise.all(currentRequests);
 
-        laptopInfos.push(...listOfObjects);
+        laptopInfos.push(...listOfObjects.filter((el) => el !== null));
         return extractLaptopInfoRecAsync(listOfLaptopUrls, laptopInfos, []);
-    } else {
-        return extractLaptopInfoRecAsync(listOfLaptopUrls, laptopInfos, currentRequests);
     }
-}
+        return extractLaptopInfoRecAsync(listOfLaptopUrls, laptopInfos, currentRequests);
+};
 
-const run = async () => {
+const runLaptopbgCrawler = async () => {
     const maxPage = await getMaxPageAsync(url, -1);
     const pageOfUrls = getListOfUrls(maxPage);
     const listOfLinks = [];
@@ -115,12 +114,12 @@ const run = async () => {
 
     await db.addIfNotExistFromList(data, 1);
     await sequelizeDbWrapper.sequelize.close();
-    
-    console.log('ready'); 
-}
 
-run();
+    console.log('ready');
+};
+
+runLaptopbgCrawler();
 
 module.exports = {
-    run,
-}
+    runLaptopbgCrawler,
+};

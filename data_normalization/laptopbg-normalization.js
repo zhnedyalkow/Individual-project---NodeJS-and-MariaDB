@@ -1,15 +1,16 @@
 const normalize = (obj) => {
-    let ram = obj.ram;
-    let hdd = obj.hdd;
-    let display = obj.display;
-    let battery = obj.battery;
-    let weight = obj.weight;
-    let laptop = obj.laptop;
-    let video = obj.video;
-    let brand = obj.brand;
-    let model = obj.model;
-    let url = obj.url;
-    let processor = obj.processor;
+    const ram = obj.ram;
+    const hdd = obj.hdd;
+    const display = obj.display;
+    const battery = obj.battery;
+    const weight = obj.weight;
+    const laptop = obj.laptop;
+    const video = obj.video;
+    const brand = obj.brand;
+    const model = obj.model;
+    // let price = obj.price;
+    const url = obj.url;
+    const processor = obj.processor;
 
     brand = getBrandData(brand);
     video = getVideoData(video);
@@ -31,9 +32,10 @@ const normalize = (obj) => {
         display: display,
         battery: battery,
         weight: weight,
-        url: url
-    }
-}
+        // price: price,
+        url: url,
+    };
+};
 
 const getFilteredRam = (ram) => {
     if (typeof ram !== 'undefined') {
@@ -43,7 +45,7 @@ const getFilteredRam = (ram) => {
         ram = null;
     }
     return ram;
-}
+};
 
 const getFilteredHddData = (hdd) => {
     hdd = hdd.substr(0, hdd.indexOf(' '));
@@ -54,53 +56,60 @@ const getFilteredHddData = (hdd) => {
         }
     }
     return hdd;
-}
+};
+
 const getFilteredWeightData = (weight) => {
     const weightDigitMatches = weight.match(/\d+/g);
     if (weightDigitMatches === null) {
-        weight = null
+        weight = null;
     } else {
         weight = weightDigitMatches + 'KG';
     }
     return weight;
-}
+};
 
 const getFilteredDisplayData = (display) => {
     const displayDigitMatches = display.match(/\d+/g);
     if (displayDigitMatches === null) {
-        display = null
+        display = null;
     } else {
         display = display.substr(0, display.indexOf(' '));
         display = display.substr(0, display.indexOf('-'));
     }
     return display;
-}
+};
 
 const getProcessorData = (processor) => {
     const n = 3; // third space
     processor = processor.toUpperCase();
-    let str = processor.split(' ')
-    var dataBeforeThirdSpace = str.slice(0, n).join(' ')
+    const str = processor.split(' ');
+    const dataBeforeThirdSpace = str.slice(0, n).join(' ');
     return dataBeforeThirdSpace;
-}
+};
 
 const getVideoData = (video) => {
     const n = 4; // fourth space
     video = video.toUpperCase();
-    let str = video.split(' ')
-    var dataBeforeFourthSpace = str.slice(0, n).join(' ')
+    const str = video.split(' ');
+    const dataBeforeFourthSpace = str.slice(0, n).join(' ');
     return dataBeforeFourthSpace;
-}
+};
 
 const getBatteryData = (battery) => {
-    battery = (battery.substr(0, battery.indexOf('-'))) + ' CELL';
+    // const batteryDigitMatches = battery.match(/\d+/g);
+    // if (batteryDigitMatches === null) {
+    //     battery = null
+    // }
+    // else {
+        battery = (battery.substr(0, battery.indexOf('-'))) + ' CELL';
+    // }
     return battery;
-}
+};
 
 const getBrandData = (brand) => {
     return brand.replace('А', 'A');
-}
+};
 
 module.exports = {
-    normalize
-}
+    normalize,
+};
