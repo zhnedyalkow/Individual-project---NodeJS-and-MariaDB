@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var Brand = sequelize.define('Brand', {
+  const Brand = sequelize.define('Brand', {
     laptop: DataTypes.STRING,
     brand: DataTypes.STRING,
     model: DataTypes.STRING,
@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   Brand.associate = function(models) {
     const {
       Specifications,
-      Provider
+      Provider,
     } = models;
 
     Brand.hasOne(Provider);
