@@ -1,16 +1,17 @@
 const normalize = (obj) => {
-    const ram = obj.ram;
-    const hdd = obj.hdd;
-    const display = obj.display;
-    const battery = obj.battery;
-    const weight = obj.weight;
-    const laptop = obj.laptop;
-    const video = obj.video;
-    const brand = obj.brand;
+    let ram = obj.ram;
+    let hdd = obj.hdd;
+    let display = obj.display;
+    let battery = obj.battery;
+    let weight = obj.weight;
+    let video = obj.video;
+    let brand = obj.brand;
+	let processor = obj.processor;
     const model = obj.model;
-    // let price = obj.price;
-    const url = obj.url;
-    const processor = obj.processor;
+	const url = obj.url;
+	const price = obj.price;
+    const laptop = obj.laptop;
+
 
     brand = getBrandData(brand);
     video = getVideoData(video);
@@ -32,7 +33,7 @@ const normalize = (obj) => {
         display: display,
         battery: battery,
         weight: weight,
-        // price: price,
+		price: price,
         url: url,
     };
 };
@@ -83,6 +84,10 @@ const getProcessorData = (processor) => {
     const n = 3; // third space
     processor = processor.toUpperCase();
     const str = processor.split(' ');
+    if (str.join(' ').includes('(')) {
+        const dataBeforeThirdSpace = str.slice(0, n).join(' ');
+        return dataBeforeThirdSpace;
+    }
     const dataBeforeThirdSpace = str.slice(0, n).join(' ');
     return dataBeforeThirdSpace;
 };
@@ -91,19 +96,26 @@ const getVideoData = (video) => {
     const n = 4; // fourth space
     video = video.toUpperCase();
     const str = video.split(' ');
+    if (str.join(' ').includes('(')) {
+        const dataBeforeFourthSpace = str.slice(0, n - 1).join(' ');
+        return dataBeforeFourthSpace;
+    }
     const dataBeforeFourthSpace = str.slice(0, n).join(' ');
     return dataBeforeFourthSpace;
 };
 
 const getBatteryData = (battery) => {
-    // const batteryDigitMatches = battery.match(/\d+/g);
-    // if (batteryDigitMatches === null) {
-    //     battery = null
-    // }
-    // else {
-        battery = (battery.substr(0, battery.indexOf('-'))) + ' CELL';
-    // }
-    return battery;
+    if (!battery.toLowerCase().includes('клетъчна')) {
+        battery = null;
+        return battery;
+    }
+
+    const batteryDigitMatches = battery.match(/\d+/g);
+    if (batteryDigitMatches === null) {
+        battery = null;
+        return battery;
+    }
+    return batteryDigitMatches[0] + ' CELL';
 };
 
 const getBrandData = (brand) => {

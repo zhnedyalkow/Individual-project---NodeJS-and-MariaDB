@@ -1,15 +1,15 @@
 const normalize = (obj) => {
-    const ram = obj.ram;
-    const hdd = obj.hdd;
-    const display = obj.display;
-    const battery = obj.battery;
-    const weight = obj.weight;
-    const laptop = obj.laptop;
+    let ram = obj.ram;
+    let hdd = obj.hdd;
+    let display = obj.display;
+    let battery = obj.battery;
+    let weight = obj.weight;
+    let laptop = obj.laptop;
+    let price = obj.price;
     const video = obj.video;
     const brand = obj.brand;
     const model = obj.model;
     const url = obj.url;
-    // let price = obj.price;
     const processor = obj.processor;
 
     ram = getFilteredRam(ram);
@@ -18,6 +18,7 @@ const normalize = (obj) => {
     battery = getFilteredBattery(battery);
     weight = getFilteredWeight(weight);
     laptop = getRenamedLaptop(laptop);
+	price = getFilteredPrice(price);
 
     return {
         laptop: laptop,
@@ -30,7 +31,7 @@ const normalize = (obj) => {
         display: display,
         battery: battery,
         weight: weight,
-        // price: price,
+        price: price,
         url: url,
     };
 };
@@ -61,11 +62,18 @@ const getFilteredDisplay = (display) => {
 const getFilteredBattery = (battery) => {
     battery = battery.slice(0, 6);
 
+    if (!battery.toUpperCase().includes('CELL')) {
+        battery = null;
+        return battery;
+    }
+
     const batteryDigitMatches = battery.match(/\d+/g);
     if (batteryDigitMatches === null) {
         battery = null;
+        return battery;
     }
-    return battery;
+
+    return battery.toUpperCase();
 };
 
 const getFilteredWeight = (weight) => {
@@ -77,6 +85,13 @@ const getFilteredWeight = (weight) => {
     return weight;
 };
 
+const getFilteredPrice = (price) => {
+    price = price
+    .replace(/\s/g, '')
+    .match(/\d+/g)[0];
+    return price;
+};
+
 const getRenamedLaptop = (laptop) => {
     if (laptop.includes('ЛАПТОП')) {
         laptop = 'LAPTOP';
@@ -84,6 +99,8 @@ const getRenamedLaptop = (laptop) => {
         laptop = 'NETBOOK';
     } else if (laptop.includes('НОУТБУК')) {
         laptop = 'NOTEBOOK';
+    } else if (laptop.includes('УЛТРАБУК')) {
+        laptop = 'ULTRABOOK';
     }
     return laptop;
 };
