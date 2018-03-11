@@ -7,6 +7,21 @@ const {
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
+const checkForInvalidData = (obj) => {
+    const check =
+        ( obj.processor.includes('AMD')
+        || obj.processor.includes('INTEL'))
+        && (obj.ram === null
+        || obj.ram.includes('GB'))
+        && (obj.video.includes('AMD')
+        || obj.video.includes('INTEL')
+        || obj.video.includes('NVIDIA')
+        || obj.video.includes('RADEON'))
+        && (obj.hdd === null
+        || obj.hdd.includes('GB'));
+    return check;
+};
+
 const checkIfExists = async (obj) => {
     const url = obj.url;
     const res = await Brand.findOne({
@@ -30,8 +45,14 @@ const addIfNotExistFromList = async (objList, providerId) => {
 
 const addIfNotExists = async (obj, providerId) => {
     try {
+		const dataValidator = checkForInvalidData(obj);
         const check = await checkIfExists(obj);
 
+		if (!dataValidator) {
+            console.log(`Invalid data: ${obj.url}`);
+            return;
+        }
+		
         if (!check) {
             return;
         }
@@ -55,6 +76,7 @@ const addIfNotExists = async (obj, providerId) => {
             display: obj.display,
             battery: obj.battery,
             weight: obj.weight,
+			price: obj.price,
             brandId: brand.id,
         }));
 
