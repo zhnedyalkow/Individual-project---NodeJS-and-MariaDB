@@ -1,11 +1,12 @@
 const {
     resetTables,
 } = require('../database/db');
- // const connection = require('../models/index');
+const connection = require('../models/index');
 
 const truncate = async () => {
-    await resetTables();
-    console.log('Successfully deleted tables!');
+    await resetTablesData();
+    await connection.sequelize.close();
+    console.log('Successfully deleted records!');
 };
 
 truncate();
