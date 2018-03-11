@@ -32,9 +32,8 @@ const extractDataFromPageAsync = async (url) => {
     const battery = $('.table-characteristics tr:nth-child(26) td:nth-child(2)')
         .html();
 
-    // let price = $('.prices .priceValue')
-    // .html()
-    // .match(/\d+/g)[0];
+    let price = $('.prices .pricevalue')
+		.html();
 
     const obj = {
         laptop: laptop,
@@ -47,7 +46,7 @@ const extractDataFromPageAsync = async (url) => {
         display: display,
         battery: battery,
         weight: weight,
-        // price,
+        price: price,
         url: url,
     };
 

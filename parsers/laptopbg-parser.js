@@ -39,10 +39,10 @@ const extractDataFromPageAsync = async (url) => {
         .html()
         .replace(/\n/g, '');
 
-    // let price = $('.price-container .price')
-    // .html()
-    // .match(/\d+/g)[0];
-
+     const price = $('.price-container .price')
+		  .html()
+		  .match(/\d+/g)[0];
+	
     const obj = {
         laptop: laptop,
         brand: brand,
@@ -54,7 +54,7 @@ const extractDataFromPageAsync = async (url) => {
         display: display,
         battery: battery,
         weight: weight,
-        // price: price,
+        price: price,
         url: url,
     };
     const newObj = laptopDataNormalization.normalize(obj);
