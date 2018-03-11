@@ -120,8 +120,6 @@ const runTehnopolisCrawler = async () => {
     console.log('ready');
 }
 
-runTehnopolisCrawler();
-
 module.exports = {
     runTehnopolisCrawler,
 }

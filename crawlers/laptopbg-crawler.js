@@ -118,8 +118,6 @@ const runLaptopbgCrawler = async () => {
     console.log('ready');
 };
 
-runLaptopbgCrawler();
-
 module.exports = {
     runLaptopbgCrawler,
 };
