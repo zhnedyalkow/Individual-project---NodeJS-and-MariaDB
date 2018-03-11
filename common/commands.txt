@@ -1,4 +1,10 @@
 logging: false
+echo $NODE_ENV -> production
+
+NODE_ENV=development -> трябва да се смени понеже
+се бъгва и не може дасе изпълни миграция
+
+logging: false
 
 npm run statistics search 4GB
 
