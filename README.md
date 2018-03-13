@@ -2,27 +2,27 @@
 
 The second project in @ Telerik Alpha Academy
 
-## App Description
-
-Web crawler is a console-application that gathers and aggregates information from tehnopolis.bg and laptop.bg. It's also provides different
-functionalities for :
-
-### Gathers the information and stores it in MariaDB/MySQL instance
-
-### Aggregation:
-
-#### Ordering by specific column.
-
-#### Searching  by specific requirement.
-
-#### Filtering data by RAM, HDD, Processor.
-	
-	
 ## Author
 
 | #        | First name | Last name  |       
 | -------- | --------- 	| ---------- |
 | 1.	   | Zhitomir  	| Oreshenski |
+
+
+## App Description
+
+Web crawler is a console-application that gathers and aggregates information from tehnopolis.bg and laptop.bg. It's also provides different
+functionalities for :
+
+- Gathers the information and stores it in MariaDB/MySQL instance
+
+- Aggregation:
+
+	- Ordering by specific column.
+
+	- Searching  by specific requirement.
+
+	- Filtering data by RAM, HDD, Processor.
 
 
 ## Libraries and Tehnologies
@@ -45,15 +45,19 @@ functionalities for :
 	
 ### Packages
 
-#### Sequelize
+- Sequelize
 
-#### Sequelize-CLI
+- Sequelize-CLI
 
-#### Sequelize-Auto-Migrations
+- Sequelize-Auto-Migrations
 
-#### JQuery
+- JQuery
 
-#### JSDOM
+- JSDOM
+
+- MySql
+
+- MySql2
 
 
 
