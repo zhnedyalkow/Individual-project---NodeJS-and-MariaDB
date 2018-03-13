@@ -11,7 +11,7 @@ The second project in @ Telerik Alpha Academy
 
 ## App Description
 
-Web crawler is a console-application that gathers and aggregates information from tehnopolis.bg and laptop.bg. It's also provides different
+Web crawler is a console-application that gathers and aggregates information from [www.tehnopolis.bg](http://www.technopolis.bg/bg) and [www.laptop.bg](www.laptop.bg/). It's also provides different
 functionalities for :
 
 - Gathers the information and stores it in MariaDB/MySQL instance
