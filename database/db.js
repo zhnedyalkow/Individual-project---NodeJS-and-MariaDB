@@ -231,48 +231,54 @@ const filterDisplay = async (value, param) => {
 
 const searchForSpecificReq = async (value) => {
     const filteredRecords =
-        await Specifications.findAll({
-            where: {
-                $or: [{
-                        ram: {
-                            like: '%' + value + '%',
+        await Brand.findAll({
+            include: [{
+                model: Specifications,
+                where: {
+                    $or: [{
+                            ram: {
+                                like: '%' + value + '%',
+                            },
                         },
-                    },
-                    {
-                        hdd: {
-                            like: '%' + value + '%',
+                        {
+                            hdd: {
+                                like: '%' + value + '%',
+                            },
                         },
-                    },
-                    {
-                        video: {
-                            like: '%' + value + '%',
+                        {
+                            video: {
+                                like: '%' + value + '%',
+                            },
                         },
-                    },
-                    {
-                        processor: {
-                            like: '%' + value + '%',
+                        {
+                            processor: {
+                                like: '%' + value + '%',
+                            },
                         },
-                    },
-                    {
-                        display: {
-                            like: '%' + value + '%',
+                        {
+                            display: {
+                                like: '%' + value + '%',
+                            },
                         },
-                    },
-                    {
-                        battery: {
-                            like: '%' + value + '%',
+                        {
+                            battery: {
+                                like: '%' + value + '%',
+                            },
                         },
-                    },
-                    {
-                        weight: {
-                            like: '%' + value + '%',
+                        {
+                            weight: {
+                                like: '%' + value + '%',
+                            },
                         },
-                    },
-                ],
-            },
+                    ],
+                },
+            }],
         });
 
-    const res = filteredRecords.map((rec) => rec.dataValues);
+    const res = filteredRecords
+        .map((rec) => console.log(rec.get({
+            plain: true,
+        })));
     return res;
 };
 
