@@ -2,6 +2,8 @@
 
 The second project in @ Telerik Alpha Academy
 
+![capture](https://user-images.githubusercontent.com/19227500/37972679-837e8af8-31e1-11e8-82b9-a5cba21f2631.png)
+
 ## Author
 
 | #        | First name | Last name  |       
